@@ -9,7 +9,8 @@ from appconf import AppConf
 
 default_filters = dict(
     css=['compressor.filters.css_default.CssAbsoluteFilter'],
-    js=['compressor.filters.jsmin.JSMinFilter'])
+    js=['compressor.filters.jsmin.JSMinFilter'],
+    parcel=['compressor.filters.parceljs.ParserFilterJS'])
 
 
 class CompressorConf(AppConf):
@@ -27,6 +28,7 @@ class CompressorConf(AppConf):
     COMPRESSORS = dict(
         css='compressor.css.CssCompressor',
         js='compressor.js.JsCompressor',
+        parcel='compressor.parceljs.ParcelJsCompressor'
     )
 
     URL = None
@@ -36,6 +38,7 @@ class CompressorConf(AppConf):
     FILTERS = {}
     CSS_FILTERS = None
     JS_FILTERS = None
+    PARCEL_FILTERS = None
 
     CSS_HASHING_METHOD = 'mtime'
 
@@ -144,7 +147,7 @@ class CompressorConf(AppConf):
 
     def configure(self):
         data = self.configured_data
-        for kind in {'css', 'js'}:
+        for kind in {'css', 'js', 'parcel'}:
             setting_name = '%s_FILTERS' % kind.upper()
             filters = data.pop(setting_name)
             if filters is not None:
