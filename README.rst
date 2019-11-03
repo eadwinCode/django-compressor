@@ -8,7 +8,7 @@ Quickstart
 ----------
 Install django-compress::
 
-    pip install git+https://github.com/eadwinCode/django-compressor/django-compressor.git
+    pip install git@github.com:eadwinCode/django-compressor.git
  
 Install parcel-bundler::
 
