@@ -1,6 +1,6 @@
-Django Compressor with Parcel-Bundler
+Django Compressor with Parceljs
 =====================================
-Django Compressor with parcel-bundler_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, etc in a Django template into cacheable static files using parcel-bundler.
+Django Compressor with parceljs_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, scss etc in a Django template into cacheable static files using parcel-bundler and django-compressor.
 More information on Django-Compressor_
 
 
@@ -44,7 +44,7 @@ In django-compressor, COMPRESS_ENABLED = !DEBUG
     COMPRESS_ENABLED = True
     COMPRESS_OFFLINE = True
 
-For more information django-compressor-settings_
+For more information on django-compressor-settings_
 
 Usage
 -----
