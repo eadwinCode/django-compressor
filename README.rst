@@ -1,6 +1,7 @@
 Django Compressor with Parceljs
 =====================================
-Django Compressor with parceljs_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, scss etc in a Django template into cacheable static files using parcel-bundler and django-compressor.
+Django-compressor_ with parceljs_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, scss etc in a Django template into cacheable static files using parceljs and django-compressor.
+
 More information on Django-Compressor_
 
 
@@ -142,7 +143,7 @@ You have successfully bundled your vue app into your django template.
 
 Using Parceljs to bundle SASS, SCSS, LESS
 -----------------------------------------
-Integrating complile into django-compressor is quiet very easy. All you need is to provide a COMPRESS_PRECOMPILERS option in django ``settings.py``. More information on django-compressor precompilers_
+Integrating compilers into django-compressor is quiet very easy. All you need is to provide a COMPRESS_PRECOMPILERS option in django ``settings.py``. For more information on django-compressor precompilers_
 
 .. code-block:: python
 
@@ -154,17 +155,17 @@ Integrating complile into django-compressor is quiet very easy. All you need is 
         ('text/stylus', 'stylus < {infile} > {outfile}'),
         ('text/foobar', 'path.to.MyPrecompilerFilter'),
     )
-To use parceljs in any asset type, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type. 
+To use parceljs in any asset type, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type in COMPRESS_PRECOMPILERS as filter. 
 
 .. code-block:: python
 
     COMPRESS_PRECOMPILERS = (
-        ('text/coffeescript', 'coffee --compile --stdio'),
+        # ('text/coffeescript', 'coffee --compile --stdio'),
         ('text/less', 'compressor.filters.parceljs.ParserFilterCSS'),
-        ('text/x-sass', 'sass {infile} {outfile}'),
+        # ('text/x-sass', 'sass {infile} {outfile}'),
         ('text/x-scss', 'compressor.filters.parceljs.ParserFilterCSS'),
-        ('text/stylus', 'stylus < {infile} > {outfile}'),
-        ('text/foobar', 'path.to.MyPrecompilerFilter'),
+        # ('text/stylus', 'stylus < {infile} > {outfile}'),
+        # ('text/foobar', 'path.to.MyPrecompilerFilter'),
     )
 
 In your template, 
@@ -251,7 +252,7 @@ Add lang attribute to the script tag ``<script lang="ts"></script>`` ::
       ...
 
 .. _Django-Compressor: https://github.com/django-compressor/django-compressor
-.. _parcel-bundler: https://parceljs.org
+.. _parceljs: https://parceljs.org
 .. _django-compressor-settings: https://django-compressor.readthedocs.io/en/latest/settings/
 .. _precompilers: https://django-compressor.readthedocs.io/en/latest/settings/#django.conf.settings.COMPRESS_PRECOMPILERS
 .. _issue: https://github.com/parcel-bundler/parcel/issues/1186/
