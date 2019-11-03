@@ -1,19 +1,5 @@
 Django Compressor with Parcel-Bundler
 =====================================
-
-.. image:: https://codecov.io/github/django-compressor/django-compressor/coverage.svg?branch=develop
-    :target: https://codecov.io/github/django-compressor/django-compressor?branch=develop
-
-.. image:: https://img.shields.io/pypi/v/django_compressor.svg
-        :target: https://pypi.python.org/pypi/django_compressor
-
-.. image:: https://secure.travis-ci.org/django-compressor/django-compressor.svg?branch=develop
-    :alt: Build Status
-    :target: http://travis-ci.org/django-compressor/django-compressor
-
-.. image:: https://caniusepython3.com/project/django_compressor.svg
-    :target: https://caniusepython3.com/project/django_compressor
-
 Django Compressor with parcel-bundler_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, etc in a Django template into cacheable static files using parcel-bundler.
 More information on Django-Compressor_
 
@@ -22,7 +8,7 @@ Quickstart
 ----------
 Install django-compress::
 
-    pip install git+https://github.com/eadwinCode/django-compressor/django-compressor.git
+    pip install https://github.com/eadwinCode/django-compressor/archive/develop.zip
  
 Install parcel-bundler::
 
