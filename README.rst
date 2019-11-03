@@ -1,5 +1,5 @@
-Django Compressor
-=================
+Django Compressor with Parcel-Bundler
+=====================================
 
 .. image:: https://codecov.io/github/django-compressor/django-compressor/coverage.svg?branch=develop
     :target: https://codecov.io/github/django-compressor/django-compressor?branch=develop
@@ -14,71 +14,146 @@ Django Compressor
 .. image:: https://caniusepython3.com/project/django_compressor.svg
     :target: https://caniusepython3.com/project/django_compressor
 
-Django Compressor processes, combines and minifies linked and inline
-Javascript or CSS in a Django template into cacheable static files.
+Django Compressor with parcel-bundler_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, etc in a Django template into cacheable static files using parcel-bundler.
+More information on Django-Compressor_
 
-It supports compilers such as coffeescript, LESS and SASS and is
-extensible by custom processing steps.
 
-Django Compressor is compatible with Django 1.11 and newer.
+Quickstart
+----------
+Install django-compress::
 
-How it works
-------------
-In your templates, all HTML code between the tags ``{% compress js/css %}`` and
-``{% endcompress %}`` is parsed and searched for CSS or JS. These styles and
-scripts are subsequently processed with optional, configurable compilers and
-filters.
+    pip install git+https://github.com/eadwinCode/django-compressor/django-compressor.git
+ 
+Install parcel-bundler::
 
-The default filter for CSS rewrites paths to static files to be absolute.
-Both Javascript and CSS files are by default concatenated and minified.
+    npm install -g parcel-bundler
 
-As the final step the template tag outputs a ``<script>`` or ``<link>``
-tag pointing to the optimized file. Alternatively it can also
-inline the resulting content into the original template directly.
+Add it to your `INSTALLED_APPS`:
 
-Since the file name is dependent on the content, these files can be given
-a far future expiration date without worrying about stale browser caches.
+.. code-block:: python
 
-For increased performance, the concatenation and compressing process
-can also be run once manually outside of the request/response cycle by using
-the Django management command ``manage.py compress``.
+    INSTALLED_APPS = (
+        ...
+        'compressor',
+        ...
+    )
+    
+    STATICFILES_FINDERS = (
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+        # other finders..
+        'compressor.finders.CompressorFinder',
+    )
 
-Configurability & Extensibility
--------------------------------
+Other Configurations
+--------------------
 
-Django Compressor is highly configurable and extensible. The HTML parsing
-is done using lxml_ or if it's not available Python's built-in HTMLParser by
-default. As an alternative Django Compressor provides a BeautifulSoup_ and a
-html5lib_ based parser, as well as an abstract base class that makes it easy to
-write a custom parser.
+To minify your code for production, you need to set COMPRESS_ENABLED to true in settings.py
 
-Django Compressor also comes with built-in support for
-`YUI CSS and JS`_ compressor, `yUglify CSS and JS`_ compressor, the Google's
-`Closure Compiler`_, a Python port of Douglas Crockford's JSmin_, a Python port
-of the YUI CSS Compressor csscompressor_ and a filter to convert (some) images into
-`data URIs`_.
+.. code-block:: python
 
-If your setup requires a different compressor or other post-processing
-tool it will be fairly easy to implement a custom filter. Simply extend
-from one of the available base classes.
+    COMPRESS_ENABLED = True
+or
 
-More documentation about the usage and settings of Django Compressor can be
-found on `django-compressor.readthedocs.org`_.
+.. code-block:: python
 
-The source code for Django Compressor can be found and contributed to on
-`github.com/django-compressor/django-compressor`_. There you can also file tickets.
+    DEBUG = False
+For more information django-compressor-settings_
 
-The in-development version of Django Compressor can be installed with
-``pip install git+https://github.com/django-compressor/django-compressor.git``
+Usage
+-----
+In your template, load compress ``{% load compress %}``
+then use ``{% compress parcel %} <script> {% endcompress %}`` to load a script. for example:
 
-.. _BeautifulSoup: http://www.crummy.com/software/BeautifulSoup/
-.. _lxml: http://lxml.de/
-.. _html5lib: https://github.com/html5lib/html5lib-python
-.. _YUI CSS and JS: http://developer.yahoo.com/yui/compressor/
-.. _yUglify CSS and JS: https://github.com/yui/yuglify
-.. _Closure Compiler: http://code.google.com/closure/compiler/
-.. _JSMin: http://www.crockford.com/javascript/jsmin.html
-.. _csscompressor: https://github.com/sprymix/csscompressor
-.. _data URIs: http://en.wikipedia.org/wiki/Data_URI_scheme
-.. _django-compressor.readthedocs.org: https://django-compressor.readthedocs.io/en/latest/
-.. _github.com/django-compressor/django-compressor: https://github.com/django-compressor/django-compressor
+.. code-block:: html
+
+    {% load static %} 
+    {% load compress %}
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Vue Django Testing</title>
+      </head>
+      <body>
+        ....
+       {% compress parcel file myts %}
+        <script src="{% static 'js/index.ts' %}"></script>
+       {% endcompress %}
+      </body>
+      ...
+      
+Vue example
+-----------
+Create a vue project in your django project root ::
+
+    npm init --yes
+    npm install -D vue-template-compiler, @vue/component-compiler-utils
+    npm install vue
+    
+In your django project app create ::
+
+    static/components/test.vue
+    static/js/index.js
+    
+In static/components/test.vue,
+
+.. code-block:: vue
+
+    <template>
+      <div>
+        <h1>{{ message }}</h1>
+      </div>
+    </template>
+
+    <script>
+        export default {
+          name: "app",
+          components: {},
+          data: {
+            message: "Hello Vue",
+          },
+          computed: {}
+        };
+        </script>
+
+    <style lang="scss">
+    </style>
+In static/js/index.js,
+
+.. code-block:: javascript
+
+    import Vue from "vue";
+    import test  from "../components/test.vue";
+    new Vue(test).$mount("#components-demo");
+
+In your django template,
+
+.. code-block:: html
+    
+    {% load static %} 
+    {% load compress %}
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Vue Django Testing</title>
+      </head>
+      <body>
+        ....
+       <div id="components-demo"></div>
+       {% compress parcel file myts %}
+         <script src="{% static 'js/index.js' %}"></script>
+       {% endcompress %}
+      </body>
+      ...
+
+Run ``runserver`` ::
+
+    python manage.py runserver
+
+You have successfully bundled your vue app into your django template.  
+    
+.. _Django-Compressor: https://github.com/django-compressor/django-compressor
+.. _parcel-bundler: https://parceljs.org
+.. _django-compressor-settings: https://django-compressor.readthedocs.io/en/stable/setting
