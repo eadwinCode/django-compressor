@@ -49,7 +49,7 @@ class ParcelJsCompressor(JsCompressor):
         content = {'js' : None, 'css': None }
         for hunk in self.hunks(forced=True):
             for key, value in hunk:
-                content[key] = f"{content[key]} {value}" if content[key] else value
+                content[key] = f"{content[key]}; {value}" if content[key] else value
         return list(content.items()) 
 
     def output(self, *args, **kwargs):

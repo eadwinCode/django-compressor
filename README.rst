@@ -156,4 +156,4 @@ You have successfully bundled your vue app into your django template.
     
 .. _Django-Compressor: https://github.com/django-compressor/django-compressor
 .. _parcel-bundler: https://parceljs.org
-.. _django-compressor-settings: https://django-compressor.readthedocs.io/en/stable/setting
+.. _django-compressor-settings: https://django-compressor.readthedocs.io/en/latest/settings/

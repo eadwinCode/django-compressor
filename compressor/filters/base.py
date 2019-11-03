@@ -1,4 +1,5 @@
 from __future__ import absolute_import, unicode_literals
+import os
 import io
 import logging
 import subprocess
@@ -61,7 +62,13 @@ class FilterBase(object):
 
     def output(self, **kwargs):
         raise NotImplementedError
+    
+    def get_tmpdir(self):
+        dirname = os.path.join(settings.BASE_DIR, '.tmp') if settings.BASE_DIR else '/tmp/'
+        if dirname is not '/tmp/' and not os.path.exists(dirname):
+            os.mkdir(dirname)
 
+        return dirname
 
 class CallbackOutputFilter(FilterBase):
     """
