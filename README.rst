@@ -229,8 +229,6 @@ Add lang attribute to the script tag ``<script lang="ts"></script>`` ::
                 age: number
             }
 
-            console.log(message)
-
             class User implements IUser{
                 constructor(user:IUser){
                     this.name = user.name
