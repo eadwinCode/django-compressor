@@ -35,7 +35,7 @@ Add it to your `INSTALLED_APPS`:
 Other Configurations
 --------------------
 
-To minify your code for production, you need to set COMPRESS_ENABLED to true in settings.py.
+To minify your code for production, you need to set COMPRESS_ENABLED and COMPRESS_OFFLINE to true in settings.py.
 
 In django-compressor, COMPRESS_ENABLED = !DEBUG
 
