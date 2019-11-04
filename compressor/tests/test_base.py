@@ -18,6 +18,7 @@ from compressor.conf import settings
 from compressor.css import CssCompressor
 from compressor.exceptions import FilterDoesNotExist, FilterError
 from compressor.js import JsCompressor
+from compressor.parceljs import ParcelJsCompressor
 from compressor.storage import DefaultStorage
 
 
@@ -111,6 +112,12 @@ class CompressorTestCase(SimpleTestCase):
 <script src="/static/js/one.js" type="text/javascript"></script>
 <script type="text/javascript">obj.value = "value";</script>"""
         self.js_node = JsCompressor('js', self.js)
+
+        self.parcel = """
+<script src="/static/js/one.js" type="text/javascript"></script>
+<script type="text/javascript">obj.value = "value";</script>
+        """
+        self.parcel_node = ParcelJsCompressor('parcel', self.parcel)
 
     def assertEqualCollapsed(self, a, b):
         """

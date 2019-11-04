@@ -8,6 +8,7 @@ from compressor.filters.base import (
 parcel_offline_args = '--no-source-maps --no-autoinstall --no-content-hash'
 parcel_args = '--no-minify --no-source-maps --no-autoinstall --no-content-hash'
 
+
 class ParserFilter(CompilerFilter):
     command = "parcel build"
 
@@ -18,7 +19,7 @@ class ParserFilter(CompilerFilter):
         raise NotImplementedError
     
     def process_quote(self, options, **kwargs):
-         # Quote infile and outfile for spaces etc.
+        # Quote infile and outfile for spaces etc.
         if "infile" in options:
             options["infile"] = shell_quote(options["infile"])
         if "outfile" in options:
@@ -168,7 +169,7 @@ class ParserFilterJS(ParserFilter):
     
     def get_refined_output(self, output, **kwargs):
         filtered, css_filtered = output
-        return ('js',smart_text(filtered)), ('css', smart_text(css_filtered.replace('///..', ''))) if css_filtered else ('css', css_filtered)
+        return ('js', smart_text(filtered)), ('css', smart_text(css_filtered.replace('///..', ''))) if css_filtered else ('css', css_filtered)
 
 
 # django-compress has best implementation

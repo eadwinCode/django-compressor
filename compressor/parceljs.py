@@ -36,7 +36,8 @@ class ParcelJsCompressor(JsCompressor):
             try:
                 if callable(filter_func):
                     content = filter_func(**kwargs)
-                    break
+                    if isinstance(content, tuple):
+                        break
             except NotImplementedError:
                 pass
         return content
@@ -46,7 +47,7 @@ class ParcelJsCompressor(JsCompressor):
         Passes each hunk (file or code) to the 'input' methods
         of the compressor filters.
         """
-        content = {'js' : None, 'css': None }
+        content = {'js': None, 'css': None}
         for hunk in self.hunks(forced=True):
             for key, value in hunk:
                 content[key] = f"{content[key]}; {value}" if content[key] else value
