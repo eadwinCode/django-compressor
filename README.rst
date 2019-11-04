@@ -1,6 +1,7 @@
-Django Compressor with Parcel-Bundler
+Django Compressor with Parceljs
 =====================================
-Django Compressor with parcel-bundler_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, etc in a Django template into cacheable static files using parcel-bundler.
+Django-compressor_ with parceljs_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, scss etc in a Django template into cacheable static files using parceljs and django-compressor.
+
 More information on Django-Compressor_
 
 
@@ -8,7 +9,7 @@ Quickstart
 ----------
 Install django-compress::
 
-    pip install https://github.com/eadwinCode/django-compressor/archive/develop.zip
+    pip install git+https://github.com/eadwinCode/django-compressor.git@develop
  
 Install parcel-bundler::
 
@@ -34,17 +35,16 @@ Add it to your `INSTALLED_APPS`:
 Other Configurations
 --------------------
 
-To minify your code for production, you need to set COMPRESS_ENABLED to true in settings.py
+To minify your code for production, you need to set COMPRESS_ENABLED and COMPRESS_OFFLINE to true in settings.py.
+
+In django-compressor, the value of COMPRESS_ENABLED = !DEBUG is not set in the settings.
 
 .. code-block:: python
 
     COMPRESS_ENABLED = True
-or
+    COMPRESS_OFFLINE = True
 
-.. code-block:: python
-
-    DEBUG = False
-For more information django-compressor-settings_
+For more information on django-compressor-settings_
 
 Usage
 -----
@@ -128,7 +128,7 @@ In your django template,
       <body>
         ....
        <div id="components-demo"></div>
-       {% compress parcel file myts %}
+       {% compress parcel file myjs %}
          <script src="{% static 'js/index.js' %}"></script>
        {% endcompress %}
       </body>
@@ -139,7 +139,117 @@ Run ``runserver`` ::
     python manage.py runserver
 
 You have successfully bundled your vue app into your django template.  
-    
+
+Using Parceljs to bundle SASS, SCSS, LESS
+-----------------------------------------
+Integrating compilers into django-compressor is quiet very easy. All you need is to provide a COMPRESS_PRECOMPILERS option in django ``settings.py``. For more information on django-compressor precompilers_
+
+.. code-block:: python
+
+    COMPRESS_PRECOMPILERS = (
+        ('text/coffeescript', 'coffee --compile --stdio'),
+        ('text/less', 'lessc {infile} {outfile}'),
+        ('text/x-sass', 'sass {infile} {outfile}'),
+        ('text/x-scss', 'sass --scss {infile} {outfile}'),
+        ('text/stylus', 'stylus < {infile} > {outfile}'),
+        ('text/foobar', 'path.to.MyPrecompilerFilter'),
+    )
+To use parceljs in any asset type, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type in COMPRESS_PRECOMPILERS as filter. 
+
+.. code-block:: python
+
+    COMPRESS_PRECOMPILERS = (
+        # ('text/coffeescript', 'coffee --compile --stdio'),
+        ('text/less', 'compressor.filters.parceljs.ParserFilterCSS'),
+        # ('text/x-sass', 'sass {infile} {outfile}'),
+        ('text/x-scss', 'compressor.filters.parceljs.ParserFilterCSS'),
+        # ('text/stylus', 'stylus < {infile} > {outfile}'),
+        # ('text/foobar', 'path.to.MyPrecompilerFilter'),
+    )
+
+In your template, 
+
+.. code-block:: html
+
+    {% load static %} 
+    {% load compress %}
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Vue Django Testing</title>
+        {% compress css file style %}
+            <link rel="stylesheet" type="text/x-scss"  href="{% static 'css/style.scss'%}">
+        {% endcompress %}
+      </head>
+      <body>
+      .......
+
+Add the ``type="text/x-scss"`` for django-compressor to use the precompiler options to compile the asset.
+
+There is alittle drawback with parceljs css url resolver. There is no configuration for parceljs to ignore resolving css url since django will always resolve static urls automatically. Read more this issue_
+
+A solution is to use ``///..`` in the url path followed by ``/static/(filepath)``
+
+.. code-block:: scss
+
+    body{
+        background-color: lightblue;
+        background-image: url(///../static/img/ssd/avatar1.png);
+
+        button{
+            font-size: .8rem;
+        }
+    }
+
+Using typescript directly in django template
+--------------------------------------------
+Add lang attribute to the script tag ``<script lang="ts"></script>`` ::
+
+    npm init --yes
+    npm install -D @babel/core, @babel/preset-env, typescript
+
+.. code-block:: ts
+
+    {% load static %} 
+    {% load compress %}
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Vue Django Testing</title>
+      </head>
+      <body>
+        ....
+       {% compress parcel file myts %}
+         <script lang="ts">
+            interface IUser {
+                name: string,
+                age: number
+            }
+
+            class User implements IUser{
+                constructor(user:IUser){
+                    this.name = user.name
+                    this.age = user.age
+                }
+                name: string    
+                age: number
+
+                get_name = () => {
+                    return this.name
+                };
+            }
+
+            const Peter = new User({name:'Peter', age:32})
+            console.log(Peter)
+         </script>
+       {% endcompress %}
+      </body>
+      ...
+
 .. _Django-Compressor: https://github.com/django-compressor/django-compressor
-.. _parcel-bundler: https://parceljs.org
+.. _parceljs: https://parceljs.org
 .. _django-compressor-settings: https://django-compressor.readthedocs.io/en/latest/settings/
+.. _precompilers: https://django-compressor.readthedocs.io/en/latest/settings/#django.conf.settings.COMPRESS_PRECOMPILERS
+.. _issue: https://github.com/parcel-bundler/parcel/issues/1186/
