@@ -154,7 +154,7 @@ Integrating compilers into django-compressor is quiet very easy. All you need is
         ('text/stylus', 'stylus < {infile} > {outfile}'),
         ('text/foobar', 'path.to.MyPrecompilerFilter'),
     )
-To use parceljs in any asset type, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type in COMPRESS_PRECOMPILERS as filter. 
+To use parceljs on any asset type in your django template, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type in COMPRESS_PRECOMPILERS as filter. For example: 
 
 .. code-block:: python
 
