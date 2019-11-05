@@ -1,6 +1,7 @@
+
 from compressor.base import Compressor, SOURCE_HUNK, SOURCE_FILE
 from compressor.conf import settings
-
+from compressor.utils import path_exist, get_basename_from_private_static
 
 class CssCompressor(Compressor):
 
@@ -15,8 +16,12 @@ class CssCompressor(Compressor):
             elem_name = self.parser.elem_name(elem)
             elem_attribs = self.parser.elem_attribs(elem)
             if elem_name == 'link' and 'rel' in elem_attribs and elem_attribs['rel'].lower() == 'stylesheet':
-                basename = self.get_basename(elem_attribs['href'])
-                filename = self.get_filename(basename)
+                href = elem_attribs['href']
+                if not path_exist(href):
+                    basename = self.get_basename(elem_attribs['href'])
+                    filename = self.get_filename(basename)
+                else:
+                    basename, filename = get_basename_from_private_static(href)
                 data = (SOURCE_FILE, filename, basename, elem)
             elif elem_name == 'style':
                 data = (SOURCE_HUNK, self.parser.elem_content(elem), None, elem)

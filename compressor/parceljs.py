@@ -1,25 +1,20 @@
-import os
 from compressor.conf import settings
 from compressor.js import JsCompressor
 from compressor.base import (
-    Compressor, SOURCE_HUNK, SOURCE_FILE, render_to_string,
+    Compressor, SOURCE_HUNK, SOURCE_FILE, render_to_string, os,
     CompressorError, mark_safe, post_compress, ContentFile, get_hexdigest
 )
-
+from compressor.utils import path_exist, get_basename_from_private_static
 
 class ParcelJsCompressor(JsCompressor):
     output_mimetypes = {'text/javascript', 'text/css'}
-
     def get_filepath(self, content, resource_kind, basename=None):
         """
         Returns file path for an output file based on contents.
-
         Returned path is relative to compressor storage's base url, for
         example "CACHE/css/58a8c0714e59.css".
-
         When `basename` argument is provided then file name (without extension)
         will be used as a part of returned file name, for example:
-
         get_filepath(content, "my_file.css") -> 'CACHE/css/my_file.58a8c0714e59.css'
         """
         parts = []
