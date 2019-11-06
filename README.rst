@@ -71,7 +71,10 @@ then use ``{% compress parcel %} <script> {% endcompress %}`` to load a script. 
       
 Vue example
 -----------
-Create a vue project in your django project root ::
+Create a vue project in your django project root.
+
+For example check out django_vue_ project
+::
 
     npm init --yes
     npm install -D vue-template-compiler, @vue/component-compiler-utils
@@ -254,3 +257,4 @@ Add lang attribute to the script tag ``<script lang="ts"></script>`` ::
 .. _django-compressor-settings: https://django-compressor.readthedocs.io/en/latest/settings/
 .. _precompilers: https://django-compressor.readthedocs.io/en/latest/settings/#django.conf.settings.COMPRESS_PRECOMPILERS
 .. _issue: https://github.com/parcel-bundler/parcel/issues/1186/
+.. _django_vue: https://github.com/eadwinCode/django_vue
