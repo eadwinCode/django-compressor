@@ -1,14 +1,14 @@
 from compressor.conf import settings
 from compressor.js import JsCompressor
-from compressor.base import (
-    Compressor, SOURCE_HUNK, SOURCE_FILE, render_to_string, os,
+from compressor.base import (render_to_string, os,
     CompressorError, mark_safe, post_compress, ContentFile, get_hexdigest
 )
-from compressor.utils import path_exist, get_basename_from_private_static
+
 
 class ParcelJsCompressor(JsCompressor):
     output_mimetypes = {'text/javascript', 'text/css'}
-    def get_filepath(self, content, resource_kind, basename=None):
+
+    def handle_parcel_filepath(self, content, resource_kind, basename=None):
         """
         Returns file path for an output file based on contents.
         Returned path is relative to compressor storage's base url, for
@@ -87,7 +87,7 @@ class ParcelJsCompressor(JsCompressor):
 
         for key, value in content:
             if value:
-                new_filepath = self.get_filepath(value, key, basename=basename)
+                new_filepath = self.handle_parcel_filepath(value, key, basename=basename)
                 if not self.storage.exists(new_filepath) or forced:
                     self.storage.save(new_filepath, ContentFile(value.encode(self.charset)))
                 content_url.update({ key: mark_safe(self.storage.url(new_filepath)) })

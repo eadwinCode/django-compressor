@@ -1,14 +1,17 @@
 import os
 import six
 from django import template
-from django.conf import settings
+from compressor.conf import settings
 from django.utils.safestring import mark_safe
+from compressor.finders import PrivateFileSystemFinder
 
+private_file_finder = PrivateFileSystemFinder()
 register = template.Library()
+
 
 @register.simple_tag
 def private_static(basename):
-    path = os.path.join(settings.BASE_DIR, 'frontend', basename)
-    if os.path.exists(path):
-        return mark_safe(path)
-    raise FileExistsError(f'{path} not found') 
+    filepath = private_file_finder.find(basename)
+    if filepath:
+        return mark_safe(filepath)
+    raise FileExistsError(f'{basename} not found in COMPRESS_PRIVATE_DIRS')

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
-
 from compressor.exceptions import FilterError
 
 
@@ -46,7 +45,7 @@ def get_pathext(default_pathext=None):
 
 def get_basename_from_private_static(full_file):
     base_name = full_file.split('/')
-    return '/'.join([base_name[len(base_name)-2],base_name[len(base_name)-1]]), full_file
+    return '/'.join([base_name[len(base_name)-2], base_name[len(base_name)-1]]), full_file
 
 
 def path_exist(filename):

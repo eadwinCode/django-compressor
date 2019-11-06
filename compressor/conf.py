@@ -24,6 +24,7 @@ class CompressorConf(AppConf):
     PARSER = 'compressor.parser.AutoSelectParser'
     OUTPUT_DIR = 'CACHE'
     STORAGE = 'compressor.storage.CompressorFileStorage'
+    PRIVATE_DIRS = ()
 
     COMPRESSORS = dict(
         css='compressor.css.CssCompressor',
@@ -113,6 +114,18 @@ class CompressorConf(AppConf):
             raise ImproperlyConfigured('COMPRESS_ROOT defaults to ' +
                                        'STATIC_ROOT, please define either')
         return os.path.normcase(os.path.abspath(value))
+
+    def configure_private_dirs(self, value):
+        if not isinstance(value, (list, tuple)):
+            raise ImproperlyConfigured("The COMPRESS_PRIVATE_DIRS setting "
+                                       "must be a list or tuple. Check for "
+                                       "missing commas.")
+        from compressor.finders import PrivateFileSystemFinder
+        privatefiles = PrivateFileSystemFinder()
+        errors = privatefiles.check()
+        if errors:
+            raise ImproperlyConfigured(errors[0])
+        return value
 
     def configure_url(self, value):
         # Uses Django's STATIC_URL by default
