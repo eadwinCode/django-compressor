@@ -2,7 +2,7 @@ Django Compressor with Parceljs
 =====================================
 Django-compressor_ with parceljs_ is base on Django-Compressor, which bundles and minifies your typescript, vue, react, scss etc in a Django template into cacheable static files using parceljs and django-compressor.
 
-More information on Django-Compressor_
+For more information visit Django-Compressor_
 
 
 Quickstart
@@ -142,7 +142,7 @@ You have successfully bundled your vue app into your django template.
 
 Using Parceljs to bundle SASS, SCSS, LESS
 -----------------------------------------
-Integrating compilers into django-compressor is quiet very easy. All you need is to provide a COMPRESS_PRECOMPILERS option in django ``settings.py``. For more information on django-compressor precompilers_
+Integrating compilers into django-compressor is quiet very easy. All you need is to provide a COMPRESS_PRECOMPILERS option in django ``settings.py``. For more information visit django-compressor precompilers_
 
 .. code-block:: python
 
@@ -154,7 +154,8 @@ Integrating compilers into django-compressor is quiet very easy. All you need is
         ('text/stylus', 'stylus < {infile} > {outfile}'),
         ('text/foobar', 'path.to.MyPrecompilerFilter'),
     )
-To use parceljs on any asset type in your django template, just add ``compressor.filters.parceljs.ParserFilterCSS`` to asset type in COMPRESS_PRECOMPILERS as filter. For example: 
+    
+Use ``compressor.filters.parceljs.ParserFilterCSS`` on scss, sass or less in COMPRESS_PRECOMPILERS options as filter. For example: 
 
 .. code-block:: python
 
