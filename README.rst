@@ -10,10 +10,11 @@ Quickstart
 Install django-compress::
 
     pip install git+https://github.com/eadwinCode/django-compressor.git@develop
+    pip install django-compressor-parceljs
  
 Install parcel-bundler::
 
-    npm install -g parcel-bundler
+    npm install -g parcel
 
 Add it to your `INSTALLED_APPS`:
 
