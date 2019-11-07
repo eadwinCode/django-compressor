@@ -11,6 +11,7 @@ Install django-compress::
 
     pip install git+https://github.com/eadwinCode/django-compressor.git@develop 
 or ::
+
     pip install django-compressor-parceljs
  
 Install parcel-bundler::
